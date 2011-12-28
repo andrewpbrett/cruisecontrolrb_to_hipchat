@@ -15,7 +15,7 @@ class Cruisecontrolrb
     noko = Nokogiri::XML(self.class.get("http://#{@base_url}/XmlStatusReport.aspx", options).parsed_response)
     { :lastBuildStatus => noko.search("Project").first.attributes["lastBuildStatus"].value,
       :webUrl => noko.search("Project").first.attributes["webUrl"].value,
-      :lastBuildLabel => noko.search("Project").first.attributes["lastBuildLabel"].value
+      :lastBuildLabel => noko.search("Project").first.attributes["lastBuildLabel"].value }
   end
   
 end
