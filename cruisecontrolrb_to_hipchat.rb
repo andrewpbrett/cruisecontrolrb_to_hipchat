@@ -5,25 +5,30 @@ require "./hipchat"
 class CruisecontrolrbToHipchat < Sinatra::Base
     
   attr_accessor :status
+  attr_accessor :activity
   
   scheduler = Rufus::Scheduler.start_new
   
   scheduler.every("#{ENV["POLLING_INTERVAL"] || 1}m") do  
+    
     status_hash = Cruisecontrolrb.new(ENV["CC_URL"], ENV["CC_USERNAME"] || "", ENV["CC_PASSWORD"] || "").fetch
-    if !status_hash.empty? and status_hash[:lastBuildStatus] != @status
-      @status = status_hash[:lastBuildStatus]
+    
+    unless status_hash.empty?        
+      if status_hash[:activity] == "Building" and @activity != "Building"
+        Hipchat.hip_post "CruiseControl has started a #{status_hash[:link_to_build]}."
+        @activity = "Building"
+      end
+      # there might be a more clever way to structure this.
+      elsif @activity == "Building" and status_hash[:activity] != "Building"
+        @activity = status_hash[:activity]
+        @status = status_hash[:lastBuildStatus]
       
-      color = status_hash[:lastBuildStatus] == "Success" ? "green" : "red"
+        color = status_hash[:lastBuildStatus] == "Success" ? "green" : "red"
       
-      url = status_hash[:webUrl].gsub("projects", "builds")
-      
-      Hipchat.post("https://api.hipchat.com/v1/rooms/message?" + 
-      "auth_token=#{ENV["HIPCHAT_AUTH_TOKEN"]}" +
-      "&message=#{URI.escape("Current+build+status:+<a href=\"" + 
-      url + "/" + status_hash[:lastBuildLabel] + "\">" + status_hash[:lastBuildStatus] + "</a>")}" +
-      "&from=#{ENV["HIPCHAT_FROM"] || "cruise-control"}" +
-      "&room_id=#{ENV["HIPCHAT_ROOM_ID"]}" + 
-      "&color=#{color}")
+        message = "Current+build+status:+#{status_hash[:link_to_build]}"
+          
+        Hipchat.hip_post message, color
+      end
     end
   end
   
