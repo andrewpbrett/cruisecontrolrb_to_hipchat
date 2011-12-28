@@ -22,4 +22,8 @@ class CruisecontrolrbToHipchat < Sinatra::Base
       "&color=#{color}")
     end
   end
+  
+  get "/" do
+    "howdy!"
+  end
 end
