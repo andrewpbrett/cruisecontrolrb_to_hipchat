@@ -8,7 +8,7 @@ class CruisecontrolrbToHipchat < Sinatra::Base
   
   scheduler = Rufus::Scheduler.start_new
   
-  scheduler.every("#{ENV["POLLING_INTERVAL"]}m") do  
+  scheduler.every("#{ENV["POLLING_INTERVAL"] || 1}m") do  
     status = Cruisecontrolrb.new(ENV["CC_URL"], ENV["CC_USERNAME"], ENV["CC_PASSWORD"]).fetch
     if status != @status
       @status = status
