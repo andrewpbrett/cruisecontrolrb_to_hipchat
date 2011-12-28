@@ -24,6 +24,6 @@ class CruisecontrolrbToHipchat < Sinatra::Base
   end
   
   get "/" do
-    "howdy!"
+    Cruisecontrolrb.new(ENV["CC_URL"], ENV["CC_USERNAME"] || "", ENV["CC_PASSWORD"] || "").fetch
   end
 end
