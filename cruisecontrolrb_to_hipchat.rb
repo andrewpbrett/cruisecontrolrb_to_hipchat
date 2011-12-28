@@ -9,7 +9,7 @@ class CruisecontrolrbToHipchat < Sinatra::Base
   scheduler = Rufus::Scheduler.start_new
   
   scheduler.every("#{ENV["POLLING_INTERVAL"] || 1}m") do  
-    status = Cruisecontrolrb.new(ENV["CC_URL"], ENV["CC_USERNAME"], ENV["CC_PASSWORD"]).fetch
+    status = Cruisecontrolrb.new(ENV["CC_URL"], ENV["CC_USERNAME"] || "", ENV["CC_PASSWORD"] || "").fetch
     if status != @status
       @status = status
       color = status == "Success" ? "green" : "red"
@@ -17,7 +17,7 @@ class CruisecontrolrbToHipchat < Sinatra::Base
       Hipchat.post("https://api.hipchat.com/v1/rooms/message?" + 
       "auth_token=#{ENV["HIPCHAT_AUTH_TOKEN"]}" +
       "&message=Current+build+status%3A+#{status}" +
-      "&from=#{ENV["HIPCHAT_FROM"]}" +
+      "&from=#{ENV["HIPCHAT_FROM"] || "cruise-control"}" +
       "&room_id=#{ENV["HIPCHAT_ROOM_ID"]}" + 
       "&color=#{color}")
     end
