@@ -13,7 +13,7 @@ class Cruisecontrolrb
   def fetch
     options = { :basic_auth => @auth }
     noko = Nokogiri::XML(self.class.get("http://#{@base_url}/XmlStatusReport.aspx", options).parsed_response)
-    return {} unless noko.search("Project").first.present?
+    return {} unless noko.search("Project").first
     { :lastBuildStatus => noko.search("Project").first.attributes["lastBuildStatus"].value,
       :webUrl => noko.search("Project").first.attributes["webUrl"].value,
       :lastBuildLabel => noko.search("Project").first.attributes["lastBuildLabel"].value }

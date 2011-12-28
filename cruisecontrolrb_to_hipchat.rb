@@ -10,7 +10,7 @@ class CruisecontrolrbToHipchat < Sinatra::Base
   
   scheduler.every("#{ENV["POLLING_INTERVAL"] || 1}m") do  
     status_hash = Cruisecontrolrb.new(ENV["CC_URL"], ENV["CC_USERNAME"] || "", ENV["CC_PASSWORD"] || "").fetch
-    if status_hash.present? and status_hash[:lastBuildStatus] != @status
+    if !status_hash.empty? and status_hash[:lastBuildStatus] != @status
       @status = status_hash[:lastBuildStatus]
       
       color = status_hash[:lastBuildStatus] == "Success" ? "green" : "red"
