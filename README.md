@@ -4,7 +4,7 @@ Heroku-ready! Just follow these steps:
 
 1. Grab a copy of the source
 
-        git clone git://github.com/steveh/airbrake_to_pivotal.git
+        git clone git@github.com:andrewpbrett/cruisecontrolrb-to-hipchat.git
 
 2. Create a Heroku app
 
@@ -13,12 +13,12 @@ Heroku-ready! Just follow these steps:
 3. Required configuration
 				
 				heroku config:add HIPCHAT_AUTH_TOKEN=your_auth_token
-			  heroku config:add HIPCHAT_ROOM_ID=your_room_id
+				heroku config:add HIPCHAT_ROOM_ID=your_room_id
 				heroku config:add CC_URL=your_cruise_control_url
 
 4. Optional configuration:
 
-				Basic auth for your CruiseControlrb install:
+				Basic auth for your CruiseControlrb install (recommended):
 				
 				heroku config:add CC_USERNAME=your_username
 				heroku config:add CC_PASSWORD=your_password
