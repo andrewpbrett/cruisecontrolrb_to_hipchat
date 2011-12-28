@@ -11,16 +11,16 @@ class CruisecontrolrbToHipchat < Sinatra::Base
   scheduler.every("#{ENV["POLLING_INTERVAL"] || 1}m") do  
     status_hash = Cruisecontrolrb.new(ENV["CC_URL"], ENV["CC_USERNAME"] || "", ENV["CC_PASSWORD"] || "").fetch
     if status_hash[:lastBuildStatus] != @status
-      @status = status[:lastBuildStatus]
+      @status = status_hash[:lastBuildStatus]
       
-      color = status[:lastBuildStatus] == "Success" ? "green" : "red"
+      color = status_hash[:lastBuildStatus] == "Success" ? "green" : "red"
       
-      url = status[:webUrl].gsub("projects", "builds")
+      url = status_hash[:webUrl].gsub("projects", "builds")
       
       Hipchat.post("https://api.hipchat.com/v1/rooms/message?" + 
       "auth_token=#{ENV["HIPCHAT_AUTH_TOKEN"]}" +
       "&message=#{URI.escape("Current+build+status:+<a href=\"" + 
-      url + "/" + status[:lastBuildLabel] + "\">" + status[:lastBuildStatus] + "</a>")}" +
+      url + "/" + status_hash[:lastBuildLabel] + "\">" + status_hash[:lastBuildStatus] + "</a>")}" +
       "&from=#{ENV["HIPCHAT_FROM"] || "cruise-control"}" +
       "&room_id=#{ENV["HIPCHAT_ROOM_ID"]}" + 
       "&color=#{color}")
