@@ -19,7 +19,8 @@ class CruisecontrolrbToHipchat < Sinatra::Base
         Hipchat.new.hip_post "CruiseControl has started a #{status_hash[:link_to_build]}."
         @activity = "Building"
       # there might be a more clever way to structure this.
-      elsif @activity == "Building" and status_hash[:activity] != "Building"
+      elsif (@activity.nil? and @status.nil?) or 
+            (@activity == "Building" and status_hash[:activity] != "Building")
         @activity = status_hash[:activity]
         @status = status_hash[:lastBuildStatus]
       
