@@ -15,6 +15,10 @@ class CruisecontrolrbToHipchat < Sinatra::Base
     
     status_hash = Cruisecontrolrb.new(ENV["CC_URL"], ENV["CC_USERNAME"] || "", ENV["CC_PASSWORD"] || "").fetch
     
+    puts status_hash
+    puts @activity
+    puts @status
+    
     unless status_hash.empty?        
       if status_hash[:activity] == "Building" and @activity != "Building"
         Hipchat.hip_post "CruiseControl has started a #{status_hash[:link_to_build]}."
