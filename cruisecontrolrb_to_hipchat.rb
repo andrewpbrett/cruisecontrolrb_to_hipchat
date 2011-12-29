@@ -11,12 +11,15 @@ class CruisecontrolrbToHipchat < Sinatra::Base
   
   scheduler.every("#{ENV["POLLING_INTERVAL"] || 1}m") do  
     
+    puts "here" 
+    
     status_hash = Cruisecontrolrb.new(ENV["CC_URL"], ENV["CC_USERNAME"] || "", ENV["CC_PASSWORD"] || "").fetch
     
     unless status_hash.empty?        
       if status_hash[:activity] == "Building" and @activity != "Building"
         Hipchat.hip_post "CruiseControl has started a #{status_hash[:link_to_build]}."
         @activity = "Building"
+        puts "building"
       # there might be a more clever way to structure this.
       elsif @activity == "Building" and status_hash[:activity] != "Building"
         @activity = status_hash[:activity]
