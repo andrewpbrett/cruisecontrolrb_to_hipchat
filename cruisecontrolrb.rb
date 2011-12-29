@@ -13,6 +13,8 @@ class Cruisecontrolrb
   def fetch
     options = { :basic_auth => @auth }
     puts @base_url
+    puts options
+    puts "http://#{@base_url}/XmlStatusReport.aspx"
     noko = Nokogiri::XML(self.class.get("http://#{@base_url}/XmlStatusReport.aspx", options).parsed_response)
     puts noko.search("Project").first
     puts noko
