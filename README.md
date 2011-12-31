@@ -30,6 +30,6 @@ Heroku-ready! Just follow these steps:
 
         git push heroku master
 
-6. Have a beer while you wait for your first notification in Hipchat.
+6. Set up something to ping your app regularly in order to [prevent it from idling](http://stackoverflow.com/questions/5480337/easy-way-to-prevent-heroku-idling). The New Relic add-on seems to do the trick, but so does a cron job, pingdom, etc., etc., etc. ...
 
-7. NOTE: for best results, install the New Relic add-on to your Heroku project to [prevent it from idling](http://stackoverflow.com/questions/5480337/easy-way-to-prevent-heroku-idling).
+7. Have a beer while you wait for your first notification in Hipchat.
