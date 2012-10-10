@@ -4,7 +4,7 @@ Heroku-ready! Just follow these steps:
 
 1. Grab a copy of the source
 
-        git clone git@github.com:andrewpbrett/cruisecontrolrb-to-hipchat.git
+        git clone git@github.com:andrewpbrett/cruisecontrolrb_to_hipchat.git
 
 2. Create a Heroku app
 
